@@ -5,14 +5,17 @@
  */
 package view;
 
+import dao.CarroDAO;
+import java.sql.Date;
 import java.text.ParseException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.text.MaskFormatter;
+import model.Carro;
 
 /**
  *
- * @author Alunos
+ * @author(name = Guilherme de Liz, date= 08-14-2017)
  */
 public class jFrameCadastroCarro extends javax.swing.JFrame {
 
@@ -62,7 +65,7 @@ public class jFrameCadastroCarro extends javax.swing.JFrame {
         jLabelFabricante11 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
+        jTextAreaDescricao = new javax.swing.JTextArea();
         jFormattedTextFieldDataCompra = new javax.swing.JFormattedTextField();
         jSpinnerAnoFabricacao = new javax.swing.JSpinner();
         jSpinnerAnoLancamento = new javax.swing.JSpinner();
@@ -96,6 +99,11 @@ public class jFrameCadastroCarro extends javax.swing.JFrame {
         });
 
         jButtonSalvar.setText("Salvar");
+        jButtonSalvar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonSalvarActionPerformed(evt);
+            }
+        });
 
         jLabelFabricante.setText("Fabricante");
 
@@ -129,9 +137,9 @@ public class jFrameCadastroCarro extends javax.swing.JFrame {
 
         jLabel3.setText("Descricao");
 
-        jTextArea1.setColumns(20);
-        jTextArea1.setRows(5);
-        jScrollPane1.setViewportView(jTextArea1);
+        jTextAreaDescricao.setColumns(20);
+        jTextAreaDescricao.setRows(5);
+        jScrollPane1.setViewportView(jTextAreaDescricao);
 
         try {
             jFormattedTextFieldDataCompra.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##/##/####")));
@@ -298,12 +306,43 @@ public class jFrameCadastroCarro extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jTextFieldNomeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldNomeActionPerformed
-        // TODO add your handling code here:
+
     }//GEN-LAST:event_jTextFieldNomeActionPerformed
 
     private void jButtonCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCancelarActionPerformed
         this.dispose();
     }//GEN-LAST:event_jButtonCancelarActionPerformed
+
+    private void jButtonSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSalvarActionPerformed
+        Carro c = new Carro();
+        c.setNome(jTextFieldNome.getText());
+        c.setCor((String) jComboBoxCor.getSelectedItem());
+        c.setFabricante((String) jComboBoxFabricante.getSelectedItem());
+        c.setPlaca(jFormattedTextFieldPlaca.getText());
+        c.setChassi(jTextFieldChassi.getText());
+        c.setAnoFabricacao((short) jSpinnerAnoFabricacao.getValue());
+        c.setAnoLancamento((short) jSpinnerAnoLancamento.getValue());
+        c.setTipoPneu(Short.parseShort(jTextFieldTipoPneu.getText()));
+        c.setQuilometragem(Float.parseFloat(jTextFieldQuilometragem.getText()));
+        c.setPotencia(Float.parseFloat(jTextFieldPotencia.getText()));
+        c.setEstaFuncional(jCheckBoxEstaFuncionando.isSelected());
+        c.setPermitidaCirculacao(jCheckBoxPermitidaCirculacao.isSelected());
+        c.setQtdBatidas(Byte.parseByte(jTextFieldQtdBatidas.getText()));
+        c.setQtdPortas((byte) jSpinnerQtdPortas.getValue());
+        c.setRenavam(Integer.parseInt(jTextFieldRenavam.getText()));
+        int ano = Integer.parseInt(jFormattedTextFieldDataCompra.getText().substring(6, 10));
+        int mes = Integer.parseInt(jFormattedTextFieldDataCompra.getText().substring(3, 5));
+        int dia = Integer.parseInt(jFormattedTextFieldDataCompra.getText().substring(0, 2));
+        c.setDataCompra(new Date(ano, mes, dia));
+        c.setDescricao(jTextAreaDescricao.getText());
+
+        CarroDAO dao = new CarroDAO();
+        if (jLabelCodigo.getText().trim().equals("")) {
+            dao.inserir(c);
+        } else {
+            dao.alterar(c);
+        }
+    }//GEN-LAST:event_jButtonSalvarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -371,7 +410,7 @@ public class jFrameCadastroCarro extends javax.swing.JFrame {
     private javax.swing.JSpinner jSpinnerAnoFabricacao;
     private javax.swing.JSpinner jSpinnerAnoLancamento;
     private javax.swing.JSpinner jSpinnerQtdPortas;
-    private javax.swing.JTextArea jTextArea1;
+    private javax.swing.JTextArea jTextAreaDescricao;
     private javax.swing.JTextField jTextFieldChassi;
     private javax.swing.JTextField jTextFieldNome;
     private javax.swing.JTextField jTextFieldPotencia;
