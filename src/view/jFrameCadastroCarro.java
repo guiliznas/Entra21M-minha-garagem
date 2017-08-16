@@ -185,12 +185,12 @@ public class jFrameCadastroCarro extends javax.swing.JFrame {
                         .addGap(24, 24, 24)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jTextFieldNome, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 137, Short.MAX_VALUE)
-                            .addComponent(jLabelCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jTextFieldChassi)
                             .addComponent(jSpinnerAnoFabricacao)
                             .addComponent(jComboBoxCor, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jComboBoxFabricante, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jFormattedTextFieldPlaca))
+                            .addComponent(jFormattedTextFieldPlaca)
+                            .addComponent(jLabelCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(51, 51, 51)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jCheckBoxEstaFuncionando)
@@ -232,7 +232,7 @@ public class jFrameCadastroCarro extends javax.swing.JFrame {
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                 .addComponent(jSpinnerAnoLancamento, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addComponent(jTextFieldTipoPneu, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                .addContainerGap(19, Short.MAX_VALUE))
+                .addContainerGap(20, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jButtonSalvar)
@@ -345,11 +345,12 @@ public class jFrameCadastroCarro extends javax.swing.JFrame {
             int codigo = dao.inserir(c);
             if (codigo != Utilitarios.NAO_FOI_POSSIVEL_INSERIR) {
                 JOptionPane.showMessageDialog(null, "Cadastrado!");
+                jLabelCodigo.setText(String.valueOf(codigo));
             } else {
                 JOptionPane.showMessageDialog(null, "Nao cadastrado!");
             }
-            this.dispose();
         } else {
+            c.setId(Integer.parseInt(jLabelCodigo.getText()));
             int codigo = dao.alterar(c);
             if (codigo != Utilitarios.NAO_FOI_POSSIVEL_ALTERAR) {
                 JOptionPane.showMessageDialog(null, "Alterado!");

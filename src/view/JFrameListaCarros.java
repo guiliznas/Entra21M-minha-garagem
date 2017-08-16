@@ -59,7 +59,7 @@ public class JFrameListaCarros extends JFrame implements JFrameComportamentosInt
         jTable = new JTable(modelo);
         scroll = new JScrollPane(jTable);
 
-        jTable.getColumnModel().getColumn(0).setPreferredWidth(0);
+//        jTable.getColumnModel().removeColumn(jTable.getColumn(this));
         
         jButtonExcluir = new JButton("Excluir");
     }
