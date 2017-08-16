@@ -6,11 +6,9 @@
 package view;
 
 import dao.CarroDAO;
+import database.Utilitarios;
 import java.sql.Date;
-import java.text.ParseException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.swing.text.MaskFormatter;
+import javax.swing.JOptionPane;
 import model.Carro;
 
 /**
@@ -35,7 +33,7 @@ public class jFrameCadastroCarro extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabelCodigo2 = new javax.swing.JLabel();
+        buttonGroupQtdPorta = new javax.swing.ButtonGroup();
         jLabelCodigo1 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
@@ -72,11 +70,10 @@ public class jFrameCadastroCarro extends javax.swing.JFrame {
         jComboBoxCor = new javax.swing.JComboBox();
         jComboBoxFabricante = new javax.swing.JComboBox();
         jFormattedTextFieldPlaca = new javax.swing.JFormattedTextField();
-        jSpinnerQtdPortas = new javax.swing.JSpinner();
+        jRadioButton2Porta = new javax.swing.JRadioButton();
+        jRadioButton4Porta = new javax.swing.JRadioButton();
 
-        jLabelCodigo2.setText(" ");
-
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setBackground(new java.awt.Color(0, 51, 51));
 
         jLabelCodigo1.setText("Codigo");
@@ -163,7 +160,11 @@ public class jFrameCadastroCarro extends javax.swing.JFrame {
             ex.printStackTrace();
         }
 
-        jSpinnerQtdPortas.setModel(new javax.swing.SpinnerNumberModel(4, 1, 10, 1));
+        buttonGroupQtdPorta.add(jRadioButton2Porta);
+        jRadioButton2Porta.setText("2");
+
+        buttonGroupQtdPorta.add(jRadioButton4Porta);
+        jRadioButton4Porta.setText("4");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -216,7 +217,10 @@ public class jFrameCadastroCarro extends javax.swing.JFrame {
                                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                         .addComponent(jTextFieldRenavam, javax.swing.GroupLayout.DEFAULT_SIZE, 135, Short.MAX_VALUE)
                                         .addComponent(jFormattedTextFieldDataCompra)
-                                        .addComponent(jSpinnerQtdPortas))))))
+                                        .addGroup(layout.createSequentialGroup()
+                                            .addComponent(jRadioButton2Porta)
+                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                            .addComponent(jRadioButton4Porta)))))))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabelFabricante4)
@@ -273,12 +277,12 @@ public class jFrameCadastroCarro extends javax.swing.JFrame {
                         .addComponent(jLabelFabricante8)
                         .addComponent(jTextFieldQtdBatidas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jLabelFabricante3)
-                        .addComponent(jLabelFabricante9)
-                        .addComponent(jSpinnerAnoFabricacao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jSpinnerQtdPortas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabelFabricante3)
+                    .addComponent(jLabelFabricante9)
+                    .addComponent(jSpinnerAnoFabricacao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jRadioButton2Porta)
+                    .addComponent(jRadioButton4Porta))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabelFabricante4)
@@ -320,15 +324,15 @@ public class jFrameCadastroCarro extends javax.swing.JFrame {
         c.setFabricante((String) jComboBoxFabricante.getSelectedItem());
         c.setPlaca(jFormattedTextFieldPlaca.getText());
         c.setChassi(jTextFieldChassi.getText());
-        c.setAnoFabricacao((short) jSpinnerAnoFabricacao.getValue());
-        c.setAnoLancamento((short) jSpinnerAnoLancamento.getValue());
+        c.setAnoFabricacao(Short.parseShort(jSpinnerAnoFabricacao.getValue().toString()));
+        c.setAnoLancamento(Short.parseShort(jSpinnerAnoLancamento.getValue().toString()));
         c.setTipoPneu(Short.parseShort(jTextFieldTipoPneu.getText()));
         c.setQuilometragem(Float.parseFloat(jTextFieldQuilometragem.getText()));
         c.setPotencia(Float.parseFloat(jTextFieldPotencia.getText()));
         c.setEstaFuncional(jCheckBoxEstaFuncionando.isSelected());
         c.setPermitidaCirculacao(jCheckBoxPermitidaCirculacao.isSelected());
         c.setQtdBatidas(Byte.parseByte(jTextFieldQtdBatidas.getText()));
-        c.setQtdPortas((byte) jSpinnerQtdPortas.getValue());
+        c.setQtdPortas((jRadioButton2Porta.isSelected()) ? (byte) 2 : (byte) 4);
         c.setRenavam(Integer.parseInt(jTextFieldRenavam.getText()));
         int ano = Integer.parseInt(jFormattedTextFieldDataCompra.getText().substring(6, 10));
         int mes = Integer.parseInt(jFormattedTextFieldDataCompra.getText().substring(3, 5));
@@ -338,9 +342,20 @@ public class jFrameCadastroCarro extends javax.swing.JFrame {
 
         CarroDAO dao = new CarroDAO();
         if (jLabelCodigo.getText().trim().equals("")) {
-            dao.inserir(c);
+            int codigo = dao.inserir(c);
+            if (codigo != Utilitarios.NAO_FOI_POSSIVEL_INSERIR) {
+                JOptionPane.showMessageDialog(null, "Cadastrado!");
+            } else {
+                JOptionPane.showMessageDialog(null, "Nao cadastrado!");
+            }
+            this.dispose();
         } else {
-            dao.alterar(c);
+            int codigo = dao.alterar(c);
+            if (codigo != Utilitarios.NAO_FOI_POSSIVEL_ALTERAR) {
+                JOptionPane.showMessageDialog(null, "Alterado!");
+            } else {
+                JOptionPane.showMessageDialog(null, "Nao alterado!");
+            }
         }
     }//GEN-LAST:event_jButtonSalvarActionPerformed
 
@@ -380,6 +395,7 @@ public class jFrameCadastroCarro extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.ButtonGroup buttonGroupQtdPorta;
     private javax.swing.JButton jButtonCancelar;
     private javax.swing.JButton jButtonSalvar;
     private javax.swing.JCheckBox jCheckBoxEstaFuncionando;
@@ -393,7 +409,6 @@ public class jFrameCadastroCarro extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabelCodigo;
     private javax.swing.JLabel jLabelCodigo1;
-    private javax.swing.JLabel jLabelCodigo2;
     private javax.swing.JLabel jLabelFabricante;
     private javax.swing.JLabel jLabelFabricante1;
     private javax.swing.JLabel jLabelFabricante10;
@@ -406,10 +421,11 @@ public class jFrameCadastroCarro extends javax.swing.JFrame {
     private javax.swing.JLabel jLabelFabricante7;
     private javax.swing.JLabel jLabelFabricante8;
     private javax.swing.JLabel jLabelFabricante9;
+    private javax.swing.JRadioButton jRadioButton2Porta;
+    private javax.swing.JRadioButton jRadioButton4Porta;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSpinner jSpinnerAnoFabricacao;
     private javax.swing.JSpinner jSpinnerAnoLancamento;
-    private javax.swing.JSpinner jSpinnerQtdPortas;
     private javax.swing.JTextArea jTextAreaDescricao;
     private javax.swing.JTextField jTextFieldChassi;
     private javax.swing.JTextField jTextFieldNome;
