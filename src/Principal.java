@@ -26,7 +26,6 @@ public class Principal {
     }
 
     private void test() {
-        System.out.println("a");
         CarroDAO dao = new CarroDAO();
         Carro eoq = new Carro();
         eoq.setNome("308");
