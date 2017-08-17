@@ -4,6 +4,7 @@ import dao.CarroDAO;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
@@ -33,6 +34,8 @@ public class JFrameListaCarros extends JFrame implements JFrameComportamentosInt
     @Override
     public void criarTela() {
         setSize(600, 300);
+        setTitle("Listagem de Carros");
+        setIconImage(new ImageIcon(getClass().getResource("/imagens/garage_black.png")).getImage());
         setLayout(null);
         setResizable(false);
         setLocationRelativeTo(null);
@@ -48,7 +51,7 @@ public class JFrameListaCarros extends JFrame implements JFrameComportamentosInt
                 return false;
             }
         };
-        modelo.addColumn("");
+        modelo.addColumn("Codigo");
         modelo.addColumn("Fabricante");
         modelo.addColumn("Nome");
         modelo.addColumn("Placa");

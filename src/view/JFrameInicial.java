@@ -1,7 +1,11 @@
 package view;
 
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 
@@ -24,6 +28,8 @@ public class JFrameInicial extends JFrame implements JFrameComportamentosInterfa
     @Override
     public void criarTela() {
         setSize(600, 300);
+        setTitle("Garagem");
+        setIconImage(new ImageIcon(getClass().getResource("/imagens/garage_black.png")).getImage());
         setLayout(null);
         setResizable(false);
         setLocationRelativeTo(null);

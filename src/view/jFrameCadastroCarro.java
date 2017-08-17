@@ -8,6 +8,7 @@ package view;
 import dao.CarroDAO;
 import database.Utilitarios;
 import java.sql.Date;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import model.Carro;
 
@@ -72,9 +73,12 @@ public class jFrameCadastroCarro extends javax.swing.JFrame {
         jFormattedTextFieldPlaca = new javax.swing.JFormattedTextField();
         jRadioButton2Porta = new javax.swing.JRadioButton();
         jRadioButton4Porta = new javax.swing.JRadioButton();
+        jButtonExcluir = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Cadastro de Carro");
         setBackground(new java.awt.Color(0, 51, 51));
+        setIconImage(new ImageIcon(getClass().getResource("/imagens/garage_black.png")).getImage());
 
         jLabelCodigo1.setText("Codigo");
 
@@ -166,6 +170,13 @@ public class jFrameCadastroCarro extends javax.swing.JFrame {
         buttonGroupQtdPorta.add(jRadioButton4Porta);
         jRadioButton4Porta.setText("4");
 
+        jButtonExcluir.setText("Excluir");
+        jButtonExcluir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonExcluirActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -235,6 +246,8 @@ public class jFrameCadastroCarro extends javax.swing.JFrame {
                 .addContainerGap(20, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jButtonExcluir)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jButtonSalvar)
                 .addGap(18, 18, 18)
                 .addComponent(jButtonCancelar)
@@ -302,11 +315,13 @@ public class jFrameCadastroCarro extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 40, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButtonCancelar)
-                    .addComponent(jButtonSalvar))
+                    .addComponent(jButtonSalvar)
+                    .addComponent(jButtonExcluir))
                 .addContainerGap())
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void jTextFieldNomeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldNomeActionPerformed
@@ -318,6 +333,34 @@ public class jFrameCadastroCarro extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonCancelarActionPerformed
 
     private void jButtonSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSalvarActionPerformed
+        if (jTextFieldTipoPneu.getText().trim().equals("")) {
+            JOptionPane.showMessageDialog(null, "Por favor, preencha os campos!");
+            return;
+        }
+        if (jTextFieldQuilometragem.getText().trim().equals("")) {
+            JOptionPane.showMessageDialog(null, "Por favor, preencha os campos!");
+            return;
+        }
+        if (jTextFieldPotencia.getText().trim().equals("")) {
+            JOptionPane.showMessageDialog(null, "Por favor, preencha os campos!");
+            return;
+        }
+        if (jTextFieldRenavam.getText().trim().equals("")) {
+            JOptionPane.showMessageDialog(null, "Por favor, preencha os campos!");
+            return;
+        }
+        if (jTextFieldQtdBatidas.getText().trim().equals("")) {
+            JOptionPane.showMessageDialog(null, "Por favor, preencha os campos!");
+            return;
+        }
+        if (jFormattedTextFieldDataCompra.getText().equals("  /  /    ")) {
+            JOptionPane.showMessageDialog(null, "Por favor, preencha os campos!");
+            return;
+        }
+        if (jTextFieldNome.getText().trim().equals("")) {
+            JOptionPane.showMessageDialog(null, "Por favor, preencha os campos!");
+            return;
+        }
         Carro c = new Carro();
         c.setNome(jTextFieldNome.getText());
         c.setCor((String) jComboBoxCor.getSelectedItem());
@@ -360,6 +403,21 @@ public class jFrameCadastroCarro extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jButtonSalvarActionPerformed
 
+    private void jButtonExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonExcluirActionPerformed
+        if (jLabelCodigo.getText().trim().equals("")) {
+            JOptionPane.showMessageDialog(null, "Nehum veiculo cadastrado ainda");
+        } else {
+            int codigo = Integer.parseInt(jLabelCodigo.getText());
+            CarroDAO dao = new CarroDAO();
+            if (dao.excluir(codigo) == Utilitarios.NAO_FOI_POSSIVEL_EXCLUIR) {
+                JOptionPane.showMessageDialog(null, "Nao foi possivel excluir");
+            } else {
+                JOptionPane.showMessageDialog(null, "Apagado com sucesso!");
+                this.dispose();
+            }
+        }
+    }//GEN-LAST:event_jButtonExcluirActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -398,6 +456,7 @@ public class jFrameCadastroCarro extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup buttonGroupQtdPorta;
     private javax.swing.JButton jButtonCancelar;
+    private javax.swing.JButton jButtonExcluir;
     private javax.swing.JButton jButtonSalvar;
     private javax.swing.JCheckBox jCheckBoxEstaFuncionando;
     private javax.swing.JCheckBox jCheckBoxPermitidaCirculacao;
