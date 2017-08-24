@@ -1,10 +1,7 @@
 package view;
 
-import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
-import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -16,6 +13,7 @@ import javax.swing.JFrame;
 public class JFrameInicial extends JFrame implements JFrameComportamentosInterface{
     private JButton jButtonListaCarros;
     private JButton jButtonCadastroCarro;
+    private JButton jButtonListaCategorias;
 
     public JFrameInicial() {
         criarTela();
@@ -41,18 +39,21 @@ public class JFrameInicial extends JFrame implements JFrameComportamentosInterfa
     public void criarComponentes() {
         jButtonListaCarros = new JButton("Lista Carros");
         jButtonCadastroCarro = new JButton("Add Carro");
+        jButtonListaCategorias = new JButton("Lista Categorias");
     }
 
     @Override
     public void definirLocalizacao() {
         jButtonListaCarros.setBounds(10, 10, 200, 35);
         jButtonCadastroCarro.setBounds(10, 55, 200, 35);
+        jButtonListaCategorias.setBounds(10, 100, 200, 35);
     }
 
     @Override
     public void adicionarComponentes() {
         add(jButtonListaCarros);
         add(jButtonCadastroCarro);
+        add(jButtonListaCategorias);
     }
 
     @Override
@@ -63,6 +64,9 @@ public class JFrameInicial extends JFrame implements JFrameComportamentosInterfa
         
         jButtonCadastroCarro.addActionListener((ActionEvent e) -> {
             new jFrameCadastroCarro().setVisible(true);
+        });
+        jButtonListaCategorias.addActionListener((ActionEvent e) -> {
+            new jFrameListaCategorias().setVisible(true);
         });
     }
 }

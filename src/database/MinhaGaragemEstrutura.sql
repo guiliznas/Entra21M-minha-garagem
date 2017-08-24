@@ -31,3 +31,15 @@ CREATE TABLE IF NOT EXISTS carros (
     renavam INT,
 	descricao TEXT
 );
+
+#Excluir tabela de categorias caso exista
+DROP TABLE IF EXISTS categorias;
+
+#Criar tabela de categorias caso não exista
+CREATE TABLE IF NOT EXISTS categorias(
+    id INTEGER PRIMARY KEY AUTO_INCREMENT,
+    nome VARCHAR(150) UNIQUE NOT NULL,
+    ativa BOOLEAN DEFAULT FALSE,
+    descricao TEXT
+    #Unique (id, nome)
+);
