@@ -43,3 +43,12 @@ CREATE TABLE IF NOT EXISTS categorias(
     descricao TEXT
     #Unique (id, nome)
 );
+
+DROP TABLE IF EXISTS avioes;
+
+CREATE TABLE IF NOT EXISTS avioes(
+	id INTEGER PRIMARY KEY AUTO_INCREMENT,
+	id_categoria INTEGER NOT NULL,
+	FOREIGN KEY (id_categoria) REFERENCES categorias(id),
+	nome VARCHAR(100) NOT NULL UNIQUE
+);

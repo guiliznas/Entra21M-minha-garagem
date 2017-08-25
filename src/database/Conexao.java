@@ -3,6 +3,7 @@ package database;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.Properties;
 import javax.swing.JOptionPane;
 
@@ -39,6 +40,25 @@ public class Conexao {
                 conexao.close();
             } catch (SQLException ex) {
                 System.out.println(ex.getMessage());
+            }
+        }
+    }
+
+    public static void truncate() {
+        conectar();
+        if (conexao != null) {
+            try {
+                Statement st = conexao.createStatement();
+                st.addBatch("SET FOREIGN_KEY_CHECKS = 0;");
+                st.addBatch("TRUNCATE TABLE carros;");
+                st.addBatch("TRUNCATE TABLE categorias;");
+                st.addBatch("TRUNCATE TABLE avioes;");
+                st.addBatch("SET FOREIGN_KEY_CHECKS = 1;");
+                st.executeBatch();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            } finally {
+                desconectar();
             }
         }
     }

@@ -5,6 +5,11 @@
  */
 package view;
 
+import dao.CategoriaDAO;
+import database.Utilitarios;
+import javax.swing.JOptionPane;
+import model.Categoria;
+
 /**
  *
  * @author Alunos
@@ -16,6 +21,18 @@ public class jFrameCadastroCategoria extends javax.swing.JFrame {
      */
     public jFrameCadastroCategoria() {
         initComponents();
+    }
+
+    public jFrameCadastroCategoria(Categoria c) {
+        initComponents();
+
+        jLabelCodigo.setText(String.valueOf(c.getId()));
+        jTextFieldNome.setText(c.getNome());
+        jTextAreaDescricao.setText(c.getDescricao());
+        jRadioButtonAtivo.setSelected(c.isAtivo());
+        jRadioButtonInativo.setSelected(!c.isAtivo());
+
+        jButtonSalvar.setText("Alterar");
     }
 
     /**
@@ -35,12 +52,12 @@ public class jFrameCadastroCategoria extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         jTextAreaDescricao = new javax.swing.JTextArea();
         jLabel4 = new javax.swing.JLabel();
-        jRadioButton1 = new javax.swing.JRadioButton();
-        jRadioButton2 = new javax.swing.JRadioButton();
-        jLabel5 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
+        jRadioButtonAtivo = new javax.swing.JRadioButton();
+        jRadioButtonInativo = new javax.swing.JRadioButton();
+        jLabelCodigo = new javax.swing.JLabel();
+        jButtonSalvar = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jLabel1.setText("Codigo");
 
@@ -54,14 +71,19 @@ public class jFrameCadastroCategoria extends javax.swing.JFrame {
 
         jLabel4.setText("Status");
 
-        buttonGroupStatus.add(jRadioButton1);
-        jRadioButton1.setText("Ativo");
+        buttonGroupStatus.add(jRadioButtonAtivo);
+        jRadioButtonAtivo.setText("Ativo");
 
-        buttonGroupStatus.add(jRadioButton2);
-        jRadioButton2.setText("Inativo");
+        buttonGroupStatus.add(jRadioButtonInativo);
+        jRadioButtonInativo.setText("Inativo");
 
-        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/save.png"))); // NOI18N
-        jButton1.setText("save");
+        jButtonSalvar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/save.png"))); // NOI18N
+        jButtonSalvar.setText("save");
+        jButtonSalvar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonSalvarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -74,7 +96,7 @@ public class jFrameCadastroCategoria extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabelCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(126, 126, 126)
                         .addComponent(jLabel4))
                     .addGroup(layout.createSequentialGroup()
@@ -82,42 +104,70 @@ public class jFrameCadastroCategoria extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jTextFieldNome, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(jRadioButton1)
+                        .addComponent(jRadioButtonAtivo)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jRadioButton2))
+                        .addComponent(jRadioButtonInativo))
                     .addComponent(jLabel3))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButton1)
+                .addComponent(jButtonSalvar)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(jLabel4)
-                    .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabelCodigo, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel1)
+                        .addComponent(jLabel4)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
                     .addComponent(jTextFieldNome, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jRadioButton1)
-                    .addComponent(jRadioButton2))
+                    .addComponent(jRadioButtonAtivo)
+                    .addComponent(jRadioButtonInativo))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jButton1)
+                .addComponent(jButtonSalvar)
                 .addContainerGap())
         );
 
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jButtonSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSalvarActionPerformed
+        Categoria c = new Categoria();
+        c.setNome(jTextFieldNome.getText());
+        c.setDescricao(jTextAreaDescricao.getText());
+        c.setAtivo(jRadioButtonAtivo.isSelected());
+
+        if (jLabelCodigo.getText().equals("")) {
+            int codigo = new CategoriaDAO().inserir(c);
+            if (codigo == Utilitarios.NAO_FOI_POSSIVEL_INSERIR) {
+                JOptionPane.showMessageDialog(null, "Nao deu pra adicionar!");
+            } else {
+                c.setId(codigo);
+                jLabelCodigo.setText(String.valueOf(codigo));
+                JOptionPane.showMessageDialog(null, c.getNome() + " adicionado com sucesso!");
+            }
+        } else {
+            c.setId(Integer.parseInt(jLabelCodigo.getText()));
+            int aux = new CategoriaDAO().alterar(c);
+            if (aux == Utilitarios.NAO_FOI_POSSIVEL_ALTERAR) {
+                JOptionPane.showMessageDialog(null, "Nao deu pra alterar");
+            } else {
+                JOptionPane.showMessageDialog(null, c.getNome() + " alterado com sucesso!");
+            }
+        }
+
+    }//GEN-LAST:event_jButtonSalvarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -156,14 +206,14 @@ public class jFrameCadastroCategoria extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup buttonGroupStatus;
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButtonSalvar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
-    private javax.swing.JRadioButton jRadioButton1;
-    private javax.swing.JRadioButton jRadioButton2;
+    private javax.swing.JLabel jLabelCodigo;
+    private javax.swing.JRadioButton jRadioButtonAtivo;
+    private javax.swing.JRadioButton jRadioButtonInativo;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextArea jTextAreaDescricao;
     private javax.swing.JTextField jTextFieldNome;

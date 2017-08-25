@@ -50,12 +50,13 @@ public class CategoriaDAO {
         Connection conexao = Conexao.conectar();
         if (conexao != null) {
             String sql = "INSERT INTO categorias"
-                    + "\n(nome, descricao) VALUE"
-                    + "\n(?,?)";
+                    + "\n(nome, descricao, ativa) VALUE"
+                    + "\n(?,?,?)";
             try {
                 PreparedStatement stmt = conexao.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
                 stmt.setString(1, c.getNome());
                 stmt.setString(2, c.getDescricao());
+                stmt.setBoolean(3, c.isAtivo());
                 stmt.execute();
                 ResultSet rs = stmt.getGeneratedKeys();
                 if (rs.next()) {
@@ -74,13 +75,14 @@ public class CategoriaDAO {
     public int alterar(Categoria c) {
         int codigo = Utilitarios.NAO_FOI_POSSIVEL_ALTERAR;
         String sql = "UPDATE categorias SET"
-                + "\nnome=?, descricao=?"
+                + "\nnome=?, descricao=?, ativa = ?"
                 + "\nWHERE id = ?";
         try {
             PreparedStatement stmt = Conexao.conectar().prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
             stmt.setString(1, c.getNome());
             stmt.setString(2, c.getDescricao());
-            stmt.setInt(3, c.getId());
+            stmt.setBoolean(3, c.isAtivo());
+            stmt.setInt(4, c.getId());
             codigo = stmt.executeUpdate();
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, e.getMessage(), "Erro ao alterar CategoriaDAO", JOptionPane.ERROR_MESSAGE);
@@ -104,6 +106,9 @@ public class CategoriaDAO {
         } finally {
             Conexao.desconectar();
         }
+//        if (list().isEmpty()) {
+//            truncate();
+//        }      
         return codigo;
     }
     

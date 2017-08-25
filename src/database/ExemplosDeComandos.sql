@@ -50,3 +50,14 @@ SELECT nome FROM carros ORDER BY fabricante ASC, nome ASC, cor ASC;
 SELECT cor, COUNT(cor) FROM carros GROUP BY cor;
 
 SELECT cor, COUNT(cor) FROM carros GROUP BY cor ORDER BY COUNT(cor) DESC;
+
+INSERT INTO categorias(nome) VALUES
+("Baixa"),
+("Media"),
+("Alta");
+
+INSERT INTO avioes (id_categoria, nome) VALUES
+(1, "Tecoteco"),
+(2, "Air Bus A320"),
+(2, "Air Bus 777"),
+(3, "Air Bus 747");
