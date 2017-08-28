@@ -10,10 +10,12 @@ import javax.swing.JFrame;
  *
  * @author(name= Guilherme de Liz, date= 08-14-2017)
  */
-public class JFrameInicial extends JFrame implements JFrameComportamentosInterface{
+public class JFrameInicial extends JFrame implements JFrameComportamentosInterface {
+
     private JButton jButtonListaCarros;
     private JButton jButtonCadastroCarro;
     private JButton jButtonListaCategorias;
+    private JButton jButtonListaAvioes;
 
     public JFrameInicial() {
         criarTela();
@@ -40,6 +42,7 @@ public class JFrameInicial extends JFrame implements JFrameComportamentosInterfa
         jButtonListaCarros = new JButton("Lista Carros");
         jButtonCadastroCarro = new JButton("Add Carro");
         jButtonListaCategorias = new JButton("Lista Categorias");
+        jButtonListaAvioes = new JButton("Lista de Avioes");
     }
 
     @Override
@@ -47,6 +50,7 @@ public class JFrameInicial extends JFrame implements JFrameComportamentosInterfa
         jButtonListaCarros.setBounds(10, 10, 200, 35);
         jButtonCadastroCarro.setBounds(10, 55, 200, 35);
         jButtonListaCategorias.setBounds(10, 100, 200, 35);
+        jButtonListaAvioes.setBounds(10, 145, 200, 35);
     }
 
     @Override
@@ -54,6 +58,7 @@ public class JFrameInicial extends JFrame implements JFrameComportamentosInterfa
         add(jButtonListaCarros);
         add(jButtonCadastroCarro);
         add(jButtonListaCategorias);
+        add(jButtonListaAvioes);
     }
 
     @Override
@@ -61,12 +66,15 @@ public class JFrameInicial extends JFrame implements JFrameComportamentosInterfa
         jButtonListaCarros.addActionListener((ActionEvent e) -> {
             JFrameListaCarros jflc = new JFrameListaCarros();
         });
-        
+
         jButtonCadastroCarro.addActionListener((ActionEvent e) -> {
             new jFrameCadastroCarro().setVisible(true);
         });
         jButtonListaCategorias.addActionListener((ActionEvent e) -> {
             new jFrameListaCategorias().setVisible(true);
+        });
+        jButtonListaAvioes.addActionListener((ActionEvent e) -> {
+            new jFrameListaAvioes().setVisible(true);
         });
     }
 }

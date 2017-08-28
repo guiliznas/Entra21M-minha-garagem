@@ -1,10 +1,7 @@
 package view;
 
-import com.sun.java.accessibility.util.AWTEventMonitor;
 import dao.CategoriaDAO;
 import database.Utilitarios;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
 import model.Categoria;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;

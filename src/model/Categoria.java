@@ -10,6 +10,16 @@ public class Categoria {
     private String nome, descricao;
     private boolean ativo;
 
+    public Categoria(){
+        
+    }
+
+    public Categoria(String nome, String descricao, boolean ativo) {
+        this.nome = nome;
+        this.descricao = descricao;
+        this.ativo = ativo;
+    }
+    
     public int getId() {
         return id;
     }
@@ -40,6 +50,11 @@ public class Categoria {
 
     public void setAtivo(boolean ativo) {
         this.ativo = ativo;
+    }
+
+    @Override
+    public String toString() {
+        return nome;
     }
 
 }
