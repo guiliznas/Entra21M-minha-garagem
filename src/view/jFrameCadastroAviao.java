@@ -4,6 +4,7 @@ import dao.AviaoDAO;
 import dao.CategoriaDAO;
 import model.Categoria;
 import database.Utilitarios;
+import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
@@ -21,12 +22,30 @@ public class jFrameCadastroAviao extends javax.swing.JFrame {
      */
     public jFrameCadastroAviao() {
         initComponents();
+        jComboBoxCategoria.setSelectedIndex(-1);
     }
 
     public jFrameCadastroAviao(Aviao a) {
         this();
+        popularComponentes(a);
+    }
+
+    public void popularComponentes(Aviao a) {
         jTextFieldNome.setText(a.getNome());
         jTextFieldCodigo.setText(String.valueOf(a.getId()));
+        for (int i = 0; i < jComboBoxCategoria.getModel().getSize(); i++) {
+            Categoria c = jComboBoxCategoria.getModel().getElementAt(i);
+            if (c.getId() == a.getCategoria().getId()) {
+                jComboBoxCategoria.setSelectedIndex(i);
+                return;
+            }
+        }
+    }
+
+    public void limparComponentes() {
+        jTextFieldCodigo.setText("");
+        jTextFieldNome.setText("");
+        jComboBoxCategoria.setSelectedIndex(-1);
     }
 
     /**
@@ -61,6 +80,20 @@ public class jFrameCadastroAviao extends javax.swing.JFrame {
         jButtonSalvar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButtonSalvarActionPerformed(evt);
+            }
+        });
+
+        jTextFieldCodigo.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                jTextFieldCodigoFocusLost(evt);
+            }
+        });
+        jTextFieldCodigo.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                jTextFieldCodigoKeyReleased(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jTextFieldCodigoKeyTyped(evt);
             }
         });
 
@@ -107,18 +140,59 @@ public class jFrameCadastroAviao extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButtonSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSalvarActionPerformed
-        Aviao a = new Aviao();
-        a.setNome(jTextFieldNome.getText());
-        a.setCategoria((Categoria) jComboBoxCategoria.getSelectedItem());
-        int codigo = new AviaoDAO().add(a);
-        if (codigo == Utilitarios.NAO_FOI_POSSIVEL_INSERIR) {
-            JOptionPane.showMessageDialog(null, "Nao foi possivel inserir o aviao", "Aviso", JOptionPane.ERROR_MESSAGE);
+        if (jTextFieldCodigo.getText().trim().equals("")) {
+            //Adicionar
+            if (new AviaoDAO().getByName(jTextFieldNome.getText()) != null) {
+                JOptionPane.showMessageDialog(null, "Nome ja utilizado!");
+            } else {
+                Aviao a = new Aviao();
+                a.setNome(jTextFieldNome.getText());
+                a.setCategoria((Categoria) jComboBoxCategoria.getSelectedItem());
+                int codigo = new AviaoDAO().add(a);
+                if (codigo == Utilitarios.NAO_FOI_POSSIVEL_INSERIR) {
+                    JOptionPane.showMessageDialog(null, "Nao foi possivel inserir o aviao", "Aviso", JOptionPane.ERROR_MESSAGE);
+                } else {
+                    jTextFieldCodigo.setText(String.valueOf(codigo));
+                    a.setId(codigo);
+                    JOptionPane.showMessageDialog(null, "Aviao cadastrado c sucesso!");
+                }
+            }
         } else {
-            jTextFieldCodigo.setText(String.valueOf(codigo));
+            //Alterar
+            int codigo = Integer.parseInt(jTextFieldCodigo.getText());
+
+            Aviao a = new Aviao();
             a.setId(codigo);
-            JOptionPane.showMessageDialog(null, "Aviao cadastrado c sucesso!");
+            a.setNome(jTextFieldNome.getText());
+            a.setCategoria((Categoria) jComboBoxCategoria.getSelectedItem());
+            int codigoAlterado = new AviaoDAO().edit(a);
+            if (codigo == Utilitarios.NAO_FOI_POSSIVEL_ALTERAR) {
+                JOptionPane.showMessageDialog(null, "Não foi possivel alterar", "Aviso", JOptionPane.ERROR_MESSAGE);
+            } else {
+                JOptionPane.showMessageDialog(null, "Alterado c sucesso!");
+            }
         }
     }//GEN-LAST:event_jButtonSalvarActionPerformed
+
+    private void jTextFieldCodigoKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextFieldCodigoKeyReleased
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            verificarCodigoExistente();
+        }
+    }//GEN-LAST:event_jTextFieldCodigoKeyReleased
+
+    private void jTextFieldCodigoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextFieldCodigoKeyTyped
+//        String valido = "0123456789/";
+        String valido = "0123456789";
+        if (valido.contains(String.valueOf(evt.getKeyChar()))) {
+            // TODO validar entrada preço
+        } else {
+            evt.consume();
+        }
+    }//GEN-LAST:event_jTextFieldCodigoKeyTyped
+
+    private void jTextFieldCodigoFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextFieldCodigoFocusLost
+        verificarCodigoExistente();
+    }//GEN-LAST:event_jTextFieldCodigoFocusLost
 
     private DefaultComboBoxModel<Categoria> popularJComboBoxCategoria() {
         DefaultComboBoxModel<Categoria> model = new DefaultComboBoxModel<>();
@@ -128,6 +202,23 @@ public class jFrameCadastroAviao extends javax.swing.JFrame {
 
         }
         return model;
+    }
+
+    public void verificarCodigoExistente() {
+        try {
+            int codigo = Integer.parseInt(jTextFieldCodigo.getText());
+            Aviao a = new AviaoDAO().getById(codigo);
+            if (a == null) {
+                JOptionPane.showMessageDialog(null, "Codigo invalido");
+                limparComponentes();
+                jTextFieldCodigo.requestFocus();
+            } else {
+                popularComponentes(a);
+                jTextFieldNome.requestFocus();
+            }
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(null, "Valor informado nao é valido");
+        }
     }
 
     /**

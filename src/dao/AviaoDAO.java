@@ -99,6 +99,28 @@ public class AviaoDAO {
         return a;
     }
     
+    public Aviao getByName(String name){
+        String sql = "SELECT id, nome, id_categoria FROM avioes WHERE nome = ?";
+        Aviao a = null;
+        try {
+            PreparedStatement st = Conexao.conectar().prepareStatement(sql);
+            st.setString(1, name);
+            st.execute();
+            ResultSet rs = st.getResultSet();
+            if (rs.next()) {
+                a = new Aviao();
+                a.setId(rs.getInt("id"));
+                a.setNome(rs.getString("nome"));
+                a.setCategoria(new CategoriaDAO().getById(rs.getInt("id_categoria")));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            Conexao.desconectar();
+        }
+        return a;
+    }
+    
     public boolean excluir(int id){
         String sql = "DELETE FROM avioes WHERE id = ?;";
         try {
